@@ -2,11 +2,16 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from theme import THEME
 
+# Pygame optional — kalau error, jangan crash
+HAS_PYGAME = False
+pygame = None
 try:
     import pygame
+    pygame.mixer.init()
     HAS_PYGAME = True
-except ImportError:
+except Exception as e:
     HAS_PYGAME = False
+    _pygame_error = str(e)
 
 
 class MusicApp:
@@ -17,13 +22,18 @@ class MusicApp:
         if not HAS_PYGAME:
             tk.Label(
                 self.frame,
-                text="Pygame tidak terinstall.\n\npip install pygame",
-                bg=THEME.get("window"), fg="#e74c3c",
-                font=("Courier", 12), justify="center"
+                text="🎵 Music Player\n\n"
+                     "pygame tidak bisa dimuat.\n"
+                     "Kemungkinan konflik versi SDL.\n\n"
+                     "Fix:\n"
+                     "  pip3 uninstall pygame\n"
+                     "  sudo apt install python3-pygame\n\n"
+                     "Atau skip aja — fitur ini opsional.",
+                bg=THEME.get("window"), fg=THEME.get("text"),
+                font=("Courier", 10), justify="center"
             ).pack(expand=True)
             return
 
-        pygame.mixer.init()
         self.playing = False
         self.current = None
 
