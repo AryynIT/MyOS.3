@@ -7,11 +7,12 @@ DEFAULT_CONFIG = {
     "theme": "dark",
     "wallpaper": None,
     "username": "user",
-    "password": "",          # kosong = no login
-    "autostart": ["terminal"],
+    "password": "",
+    "autostart": [],
     "show_widgets": True,
     "window_size": [1024, 700],
 }
+
 
 class Config:
     def __init__(self):
@@ -27,8 +28,11 @@ class Config:
                 pass
 
     def save(self):
-        with open(CONFIG_PATH, "w") as f:
-            json.dump(self.data, f, indent=2)
+        try:
+            with open(CONFIG_PATH, "w") as f:
+                json.dump(self.data, f, indent=2)
+        except Exception:
+            pass
 
     def get(self, key, default=None):
         return self.data.get(key, default)
